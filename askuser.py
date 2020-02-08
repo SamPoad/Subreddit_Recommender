@@ -11,15 +11,15 @@ import numpy as np
 
 # IMPORT THE MAPPER
 from pull import sr_map
-from cluster import df_user_usage
+# from transformetl import df_user_usage
 
 # GLOBAL VARIABLES
 
 
 # DEFINE FUNCTIONS
-def build_userdf(sr_list):
+def build_emptydf(df_cols_we_need):
     """This function will take the user's inputted list of subreddits and return a single-row dataframe with matching columns"""
-    user_df = pd.DataFrame().reindex_like(df_user_usage) # copy the structure of our final data format
+    user_df = pd.DataFrame().reindex_like(df_cols_we_need) # copy the structure of our final data format
     user_df = user_df[0:0] # empty this dataframe
     return user_df
 
@@ -35,26 +35,55 @@ def getSubreddits():
     while len(preferred_subreddits) < 5: # while we have less than 5 subreddits entered, keep running
 
         sr1 = input("Please enter a Subreddit you enjoy\n").lower().strip() # 
-        if sr1 in sr_map.values() and sr1 not in preferred_subreddits: # mapper was already lowered
+        potential_subreddits = sr_map['subreddit'].to_list()
+        if sr1 in potential_subreddits and sr1 not in preferred_subreddits: # mapper was already lowered
             preferred_subreddits.append(sr1)
-        # try:
-        #     if sr1 in inv_dict_sub.values():
 
-        # except:
-        #     Print("I'm sorry, I don't recognize that Subreddit. Please try again.")
-
-        # preferred_subreddits.append(sr1)
         print(f"You have entered {len(preferred_subreddits)} of 5")
     
     return preferred_subreddits
 
 def assignPreference(sr_list):
     """this function will create a dictionary to assign Preference values to the User's subreddit inputs"""
-    val_list = [0.45, 0.35, 0.1, 0.05, 0.05]
+    # user_input_ids = [sr_map['subreddit_id_mapper'][i] for i in sr_list]
+    # user_input_ids = [i for i in sr_list]
+    # print(user_input_ids)
+    val_list = [0.45, 0.35, 0.1, 0.05, 0.05] # confirmed adds up to 1
     pref = {sr_list[i] : val_list[i] for i in range(len(sr_list))}
+    # pref = {sr_map['subreddit'][i] : val_list[i] for i in range(len(sr_list))}
+    # pref = {sr_map['subreddit'][i] : val_list[i] for i in range(len(sr_list))}
+    # pref = {sr_map['subreddit'][i] : val_list[i] for i in sr_list}
+    # print([sr_map[ sr_map['subreddit'] == i]['subreddit_id_mapper'] for i in sr_list])
+    # pref = {}
+    # list2 = []
+    # print(sr_list)
+    # for i in sr_list:
+    #     for values in sr_map['subreddit']:
+    #         if i in values:
+    #             list2.append(i)
+    # print(list2)
+    # pref[sr_map[ sr_map['subreddit'] == i]['subreddit_id_mapper']] = val_list[[i]]
+    # pref = { sr_map[ sr_map['subreddit'] == i]['subreddit_id_mapper'] : val_list[i] for i in sr_list }
+    # overwrite the user_dictionary's subreddit names with subreddit ids 
+    # so that when we turn that back into a df, it has the subreddit ids like our data
+    # print(pref)
+    return pref
+
+
+
     # access the mapper and convert the KEYS into subreddit_ids to be used later
-    for i in pref.keys():
-        print(sr_map.iloc[i, 0])
+    # init_list = []
+    # list_keys = pref.keys()
+    # for i in list_keys:
+    #     init_list.append(np.where(sr_map['subreddit'] == i, # conditional
+    #     sr_map['subreddit_id_mapper'], # return if True
+    #     0, # return if False
+    #     ))
+    # print(init_list)
+
+    # for i in pref.keys():
+    #     print((sr_map.loc[sr_map['subreddit'] == i,'subreddit_id_mapper']))
+    
 
 
 
@@ -65,7 +94,7 @@ def assignPreference(sr_list):
     #         list(ini_dict.values()
     #         ))) 
 
-    return pref
+    # return pref
 
 
 
@@ -74,12 +103,19 @@ def assignPreference(sr_list):
 # then add a row to the df with the new user's preference for each matching subredditid column in user_df
 
 
-new_user = ['007', 'python', 'datascience', '1200isplenty', '100pushups']
-# new_user = getSubreddits()
+# new_user = ['100DaysofKeto', 'python', 'datascience', '1200isplenty', '100pushups']
 
-print(assignPreference(new_user))
-# print(build_userdf(new_user))
+# new_user = ['pcgaming', 'Spartacus_TV', 'vmware', 'trashy', 'gifsthatendtoosoon']
+new_user = getSubreddits()
+# assignPreference(new_user)
+# print(assignPreference(new_user))
+# build_emptydf(df_user_usage)
 
-# pass the user's input through the same data "processing" that the model's data was done
 
 
+
+
+
+# Pandas Update column with Dictionary values matching dataframe Index as Keys
+# df.birth_Month.update(pd.Series(dictionary_values))
+# how to apply this across multiple columns? 

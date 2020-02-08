@@ -1,6 +1,12 @@
 # Subreddit_Recommender
 based on your subreddit usage, which other subreddits might you like? 
 
+####
+Dependency item
+pip install fuzzywuzzy
+pip install python-Levenshtein
+
+
 Requirements: 
     deliver a recommender system
     use a clustering algorithm somewhere in the process (with too much data)

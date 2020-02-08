@@ -47,11 +47,18 @@ except:
     
     mapper_df.to_csv('subreddit_mapper.csv')
 
+df2 = data.join(mapper_df, on = 'subreddit_id', lsuffix = '_original', rsuffix = '_mapper')
+sr_map = df2[['subreddit_id_mapper', 'subreddit']]
+# sr_map.drop_duplicates(subset = 'subreddit_id_mapper', inplace = True) # obtain unique values of subreddits
+sr_map.drop_duplicates(subset = 'subreddit', inplace = True) # obtain unique values of subreddits
+sr_map = sr_map.astype(str)
+
 # Ramon's mapper - need to turn this into a function to build the mapper automatically
 # this mapper will include all subreddits from the original db, not just from our 100k rows
-dict_subreddits = mapper_df['subreddit_id'] # create a Series of IDs from the df
-dict_subreddits.index = mapper_df['subreddit'] # Set the index of that Series as the Subreddit names
-dict_subreddits = dict_subreddits.to_dict() # turn that into a dict
-sr_map = {v: k.lower() for k, v in dict_subreddits.items()} # reverse the key-value 
+# dict_subreddits = mapper_df['subreddit_id'] # create a Series of IDs from the df
+# dict_subreddits.index = mapper_df['subreddit'] # Set the index of that Series as the Subreddit names
+# dict_subreddits = dict_subreddits.to_dict() # turn that into a dict
+# sr_map = {v: k.lower() for k, v in dict_subreddits.items()} # reverse the key-value 
 
-# print(sr_map[8]) # print a specific key's value
+# print(sr_map[ sr_map['subreddit_id_mapper'] == 24749]) # print a specific key's value
+# print(sr_map.head())
