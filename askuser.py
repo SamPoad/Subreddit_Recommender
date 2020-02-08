@@ -11,6 +11,7 @@ import numpy as np
 
 # IMPORT THE MAPPER
 from pull import sr_map
+from cluster import df_user_usage
 
 # GLOBAL VARIABLES
 
@@ -18,20 +19,9 @@ from pull import sr_map
 # DEFINE FUNCTIONS
 def build_userdf(sr_list):
     """This function will take the user's inputted list of subreddits and return a single-row dataframe with matching columns"""
-    user_df = pd.DataFrame().reindex_like(data)
-    # empty this dataframe
-
-    
-    # our user dict
-    
-
-    print(user_df)
-    # user_df.append(sr_list)
-    # return user_df
-
-# create the dataframe directly from the dict
-# df = pd.DataFrame.from_dict(self, orient = 'index').fillna(0)
-
+    user_df = pd.DataFrame().reindex_like(df_user_usage) # copy the structure of our final data format
+    user_df = user_df[0:0] # empty this dataframe
+    return user_df
 
 
 # Ask the user's input
@@ -62,16 +52,34 @@ def assignPreference(sr_list):
     """this function will create a dictionary to assign Preference values to the User's subreddit inputs"""
     val_list = [0.45, 0.35, 0.1, 0.05, 0.05]
     pref = {sr_list[i] : val_list[i] for i in range(len(sr_list))}
+    # access the mapper and convert the KEYS into subreddit_ids to be used later
+    for i in pref.keys():
+        print(sr_map.iloc[i, 0])
+
+
+
+    # ini_list = [m]
+    # final_dict = dict(
+    #     zip(
+    #         ini_list, # the list of subreddit ids we want to use to overwrite our Keys
+    #         list(ini_dict.values()
+    #         ))) 
+
     return pref
 
 
 
-# new_user = getSubreddits()
-new_user = ['007', 'python', 'datascience', '1200isplenty', '100pushups']
+# replace the KEYS from dict from assignPreference with the subredditid
+# dictionary back to mapper to get subreddit ids,
+# then add a row to the df with the new user's preference for each matching subredditid column in user_df
 
-print(new_user)
+
+new_user = ['007', 'python', 'datascience', '1200isplenty', '100pushups']
+# new_user = getSubreddits()
+
 print(assignPreference(new_user))
 # print(build_userdf(new_user))
 
 # pass the user's input through the same data "processing" that the model's data was done
+
 

@@ -16,6 +16,8 @@ import joblib # for the pickled clustering model
 # IMPORT THE PIPELINE'S FUNCTIONS
 from askuser import getSubreddits
 
+# need to make sure in here, that we've run pull before askuser
+
 # GLOBAL VARIABLES
 
 

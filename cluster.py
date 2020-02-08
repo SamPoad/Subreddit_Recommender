@@ -28,4 +28,6 @@ def to_matrix(df):
 
 # CALL FUNCTIONS
 df_user_usage = to_matrix(calculate_usage(data))
-mat_user_usage = csr_matrix(df_user_usage.values) # compress our matrix
+print(df_user_usage.head())
+# mat_user_usage = csr_matrix(df_user_usage.values) # compress our matrix
+# print(mat_user_usage)
