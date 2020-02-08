@@ -6,12 +6,14 @@ This file is designed get the new user's input data, process that input in a sim
 # DEPENDENCIES
 import pandas as pd
 import numpy as np
+from fuzzywuzzy import fuzz
+
 
 # IMPORT THE MODEL
 
 # IMPORT THE MAPPER
 from pull import sr_map
-# from transformetl import df_user_usage
+from transformetl import df_user_usage
 
 # GLOBAL VARIABLES
 
@@ -36,6 +38,9 @@ def getSubreddits():
 
         sr1 = input("Please enter a Subreddit you enjoy\n").lower().strip() # 
         potential_subreddits = sr_map['subreddit'].to_list()
+        if sr1 not in potential_subreddits:
+            print("Your selection is not found in the database. Accessing similar options.\n")
+            print(fuzzy_matching(sr_map, sr1))
         if sr1 in potential_subreddits and sr1 not in preferred_subreddits: # mapper was already lowered
             preferred_subreddits.append(sr1)
 
@@ -67,9 +72,46 @@ def assignPreference(sr_list):
     # overwrite the user_dictionary's subreddit names with subreddit ids 
     # so that when we turn that back into a df, it has the subreddit ids like our data
     # print(pref)
+    user_s = sr_list
+    ids=[]
+    for i in user_s:
+        for o in sr_map['subreddit']:
+            x = sr_map.loc[sr_map.subreddit == i, 'subreddit_id_mapper'].to_list()
+        ids.append(x)
+    print(ids)
     return pref
 
+def fuzzy_matching(mapper, subreddit):
+    
+#      “””
+#      return the closest match via fuzzy ratio. If no match found, return None
 
+#      Parameters
+#      — — — — — 
+#      mapper: dict, map movie title name to index of the movie in data
+#     fav_movie: str, name of user input movie
+
+#      verbose: bool, print log if True
+#     Return
+#      — — — 
+#      index of the closest match
+#      “””
+    match_tuple = []
+     # get match
+    for title, idx in mapper.items():
+        ratio = fuzz.ratio(title.lower(), subreddit.lower())
+            
+        if ratio >= 70:
+            match_tuple.append((title, idx, ratio))
+            match_tuple = sorted(match_tuple, key=lambda x: x[2])[::-1]
+            
+    if len(match_tuple) == 0:
+        ('Oops! No match is found')
+        return
+    else:
+        print(f"Found possible matches in our database: {[x[0] for x in match_tuple]}\n")
+        print()
+        return match_tuple[0][1]
 
     # access the mapper and convert the KEYS into subreddit_ids to be used later
     # init_list = []
@@ -107,7 +149,7 @@ def assignPreference(sr_list):
 
 # new_user = ['pcgaming', 'Spartacus_TV', 'vmware', 'trashy', 'gifsthatendtoosoon']
 new_user = getSubreddits()
-# assignPreference(new_user)
+assignPreference(new_user)
 # print(assignPreference(new_user))
 # build_emptydf(df_user_usage)
 

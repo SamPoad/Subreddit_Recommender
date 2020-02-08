@@ -67,3 +67,17 @@ main.py - our command-line interface, accepting the inputted arguments
 
 
 
+
+
+Work still left to complete
+install mapper to get ids back
+https://www.geeksforgeeks.org/python-ways-to-change-keys-in-dictionary/
+on a failed input, run the fuzzy matching to provide options back
+on a failed input, let the user know that their input failed
+
+
+Potential future options
+filter out NSFW Reddits from db
+weight user's inputs according to preference, and include that in the model's input
+test the recommendations with Agglomerative Clustering instead
+test the sample proportions from our dataset to make sure it is representative of the population

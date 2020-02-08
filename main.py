@@ -16,6 +16,7 @@ from sklearn.neighbors import NearestNeighbors
 # IMPORT THE PIPELINE'S FUNCTIONS
 from askuser import new_user # SyntaxError: trailing comma not allowed without surrounding parentheses ?
 from askuser import assignPreference
+from askuser import fuzzy_matching
 from transformetl import df_user_usage, mat_user_usage
 from pull import sr_map
 
@@ -24,37 +25,7 @@ from pull import sr_map
 
 
 # DEFINE FUNCTIONS
-def fuzzy_matching(mapper, subreddit):
-    match_tuple = []
-     # get match
-    for title, idx in mapper.items():
-        ratio = fuzz.ratio(title.lower(), subreddit.lower())
-            
-        if ratio >= 70:
-            match_tuple.append((title, idx, ratio))
-            match_tuple = sorted(match_tuple, key=lambda x: x[2])[::-1]
-            
-    if len(match_tuple) == 0:
-        ('Oops! No match is found')
-        return
-    else:
-        print(f"Found possible matches in our database: {[x[0] for x in match_tuple]}\n")
-        print()
-        return match_tuple[0][1]
-    
-#      “””
-#      return the closest match via fuzzy ratio. If no match found, return None
 
-#      Parameters
-#      — — — — — 
-#      mapper: dict, map movie title name to index of the movie in data
-#     fav_movie: str, name of user input movie
-
-#      verbose: bool, print log if True
-#     Return
-#      — — — 
-#      index of the closest match
-#      “””
      
 #Creating dictionary for subreddits
 def create_Dict_Mapper(key_series, value_series):
@@ -104,10 +75,12 @@ def make_recommendation(data, mapper, model, subreddit, n_recommendations = 5):
     
     # print recommendations
     print(f"Recommendations for {subreddit}:")
-    
-    for i, (idx, dist) in enumerate(raw_recommends):
+    print(raw_recommends)
+
+    # uncomment me!    
+    # for i, (idx, dist) in enumerate(raw_recommends):
         
-        print(f"{i+1}: {reverse_mapper[idx]}, with distance of {dist}")
+    #     print(f"{i+1}: {reverse_mapper[idx]}, with distance of {dist}")
 
 # BUILD THE MODEL
 
