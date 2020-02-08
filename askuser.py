@@ -16,6 +16,22 @@ from pull import sr_map
 
 
 # DEFINE FUNCTIONS
+def build_userdf(sr_list):
+    """This function will take the user's inputted list of subreddits and return a single-row dataframe with matching columns"""
+    user_df = pd.DataFrame().reindex_like(data)
+    # empty this dataframe
+
+    
+    # our user dict
+    
+
+    print(user_df)
+    # user_df.append(sr_list)
+    # return user_df
+
+# create the dataframe directly from the dict
+# df = pd.DataFrame.from_dict(self, orient = 'index').fillna(0)
+
 
 
 # Ask the user's input
@@ -23,8 +39,7 @@ def getSubreddits():
     """This function will iterate through requesting 5 Subreddits from the user, 
     and running data validation on each"""
 
-    print("We will be asking you for 5 Subreddits that interest you")
-    
+    print("We will be asking you for 5 Subreddits that interest you, in order of preference from greatest to least.")
     preferred_subreddits = [] # create an empty list
 
     while len(preferred_subreddits) < 5: # while we have less than 5 subreddits entered, keep running
@@ -43,9 +58,20 @@ def getSubreddits():
     
     return preferred_subreddits
 
-new_user = getSubreddits()
+def assignPreference(sr_list):
+    """this function will create a dictionary to assign Preference values to the User's subreddit inputs"""
+    val_list = [0.45, 0.35, 0.1, 0.05, 0.05]
+    pref = {sr_list[i] : val_list[i] for i in range(len(sr_list))}
+    return pref
+
+
+
+# new_user = getSubreddits()
+new_user = ['007', 'python', 'datascience', '1200isplenty', '100pushups']
 
 print(new_user)
+print(assignPreference(new_user))
+# print(build_userdf(new_user))
 
 # pass the user's input through the same data "processing" that the model's data was done
 
